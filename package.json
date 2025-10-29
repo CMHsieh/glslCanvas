@@ -9,18 +9,24 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.4",
-    "@astrojs/react": "^4.3.0",
+    "@astrojs/mdx": "^4.3.9",
+    "@astrojs/react": "^4.4.1",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "astro": "^5.9.2",
+    "astro": "^5.15.2",
     "clsx": "^2.1.1",
     "glslCanvas": "github:Yuan0100/glslCanvas",
     "glslify": "^7.1.1",
     "lucide-react": "^0.515.0",
+    "node-fetch": "^3.3.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-player": "^3.3.2",
     "sass": "^1.89.2"
+  },
+  "overrides": {
+    "glslCanvas": {
+      "xhr": "npm:xhr2@^0.2.1"
+    }
   }
 }
