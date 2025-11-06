@@ -8,7 +8,7 @@ shader:
     src: "glow/imperfect_circle.frag"
 ---
 
-# Pluto
+<!-- # Pluto
 
 **Pluto** (minor-planet designation: *134340 Pluto*)
 is a
@@ -46,4 +46,4 @@ A table:
 console.log('Hi pluto!')
 ```
 
-</details>
+</details> -->
