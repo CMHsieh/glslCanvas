@@ -1,0 +1,48 @@
+---
+import styles from "./_page.module.scss";
+import Layout from "@/layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Button from "@/components/mdx/Button";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("showcase");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout>
+  <Header />
+  <div class={styles.container}>
+    <main>
+      <h1>{post.data.title}</h1>
+      <p>Created by {post.data.creator}</p>
+      {
+        post.data.demoUrl && (
+          <br />
+          <Button
+            as="a"
+            href={post.data.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="primary"
+          >
+            View Demo
+          </Button>
+        )
+      }
+      <hr />
+      <article class="prose">
+        <Content />
+      </article>
+    </main>
+  </div>
+  <Footer />
+</Layout>

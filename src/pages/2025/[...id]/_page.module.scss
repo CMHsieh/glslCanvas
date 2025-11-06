@@ -1,0 +1,37 @@
+@use '@/styles/breakpoints';
+
+.container {
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 1056px;
+  margin-top: var(--spacing-xl);
+}
+
+.head_section {
+  position: relative;
+  width: 100svw;
+  height: 70svh;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  // z-index: -1;
+
+  @media (max-width: breakpoints.$md) {
+    height: auto;
+  }
+}
+
+.canvas_container {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+main {
+  margin-top: 100px;
+}

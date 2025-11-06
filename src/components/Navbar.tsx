@@ -7,6 +7,9 @@ const navItems = {
   [`${base}/demos`]: {
     title: 'Demos',
   },
+  [`${base}/2025`]: {
+    title: '2025 秋',
+  },
   [`${base}/showcase`]: {
     title: 'Showcase',
   },

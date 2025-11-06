@@ -1,0 +1,37 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import styles from "./_page.module.scss";
+import Layout from "@/layouts/Layout.astro";
+import ShowcaseList from "@/components/ShowcaseList.astro";
+import { getCollection } from "astro:content";
+
+// 在頁面中獲取所有資料
+const allShowcasePosts = await getCollection("showcase");
+
+// 進行篩選和排序
+const posts2025 = allShowcasePosts
+  .filter((post) => post.id.startsWith("2025"))
+  .sort((a, b) => b.id.localeCompare(a.id)); // 改為降序，讓新的在前面
+
+// 組織成元件需要的資料結構
+const showcaseSections = [
+  {
+    title: "Déjà vu",
+    posts: posts2025,
+  },
+];
+---
+
+<Layout>
+  <div class={styles.page}>
+    <Header />
+    <main>
+      <div class={styles.container}>
+        <h1>2025 秋</h1>
+        <ShowcaseList sections={showcaseSections} />
+      </div>
+    </main>
+    <Footer />
+  </div>
+</Layout>
