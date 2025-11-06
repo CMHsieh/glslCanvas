@@ -2,51 +2,41 @@
 import styles from "./showcase-list.module.scss";
 import { getCollection } from "astro:content";
 import ShowcaseCard from "./ShowcaseCard.astro";
+import type { CollectionEntry } from "astro:content";
 
-const allShowcasePosts = await getCollection("showcase");
+interface Section {
+  title: string;
+  posts: CollectionEntry<"showcase">[];
+}
 
-const posts2022 = allShowcasePosts.filter((post) => post.id.startsWith("2022"));
-const posts2024 = allShowcasePosts.filter((post) => post.id.startsWith("2024"));
+interface Props {
+  sections: Section[];
+}
 
-const sorted2022 = posts2022.sort((a, b) => a.id.localeCompare(b.id));
-const sorted2024 = posts2024.sort((a, b) => a.id.localeCompare(b.id));
+const { sections } = Astro.props;
 
 const base = import.meta.env.BASE_URL || "/";
 ---
 
 <div class={styles.container}>
-  <div class={styles.list_section}>
-    <h2 class={styles.section_title}>2023 秋｜美學運算</h2>
-    <ul class={styles.list} id="list-2024">
-      {
-        sorted2024.map((post) => (
-          <li>
-            <a href={`${base}/showcase/${post.id}`}>
-              <ShowcaseCard
-                heroImage={post.data.heroImage}
-                title={post.data.title}
-              />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
-  <div class={styles.list_section}>
-    <h2 class={styles.section_title}>2022 秋｜光影運算</h2>
-    <ul class={styles.list} id="list-2022">
-      {
-        sorted2022.map((post) => (
-          <li>
-            <a href={`${base}/showcase/${post.id}`}>
-              <ShowcaseCard
-                heroImage={post.data.heroImage}
-                title={post.data.title}
-              />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+  <!-- 3. 遍歷傳入的 sections 來動態產生區塊 -->
+  {
+    sections.map((section) => (
+      <div class={styles.list_section}>
+        <h2 class={styles.section_title}>{section.title}</h2>
+        <ul class={styles.list}>
+          {section.posts.map((post) => (
+            <li>
+              <a href={`${base}/showcase/${post.id}`}>
+                <ShowcaseCard
+                  heroImage={post.data.heroImage}
+                  title={post.data.title}
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
 </div>
