@@ -18,8 +18,16 @@ const posts2024 = allShowcasePosts
   .filter((post) => post.id.startsWith("2024"))
   .sort((a, b) => b.id.localeCompare(a.id)); // 改為降序，讓新的在前面
 
+const posts2025 = allShowcasePosts
+  .filter((post) => post.id.startsWith("2025"))
+  .sort((a, b) => b.id.localeCompare(a.id)); // 改為降序，讓新的在前面
+
 // 3. 組織成元件需要的資料結構
 const showcaseSections = [
+  {
+    title: "2025 秋｜美學運算",
+    posts: posts2025,
+  },
   {
     title: "2023 秋｜美學運算",
     posts: posts2024,
