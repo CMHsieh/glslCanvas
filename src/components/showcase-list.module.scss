@@ -34,3 +34,13 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+.sub_section {
+  margin-top: var(--spacing-l);
+  margin-bottom: var(--spacing-xl);
+}
+
+.sub_section_title {
+  font-size: var(--spacing-l);
+  margin-bottom: var(--spacing-m);
+  color: hsl(var(--color-neutral-700));
+}

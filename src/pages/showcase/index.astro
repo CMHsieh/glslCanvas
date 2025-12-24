@@ -22,11 +22,26 @@ const posts2025 = allShowcasePosts
   .filter((post) => post.id.startsWith("2025"))
   .sort((a, b) => b.id.localeCompare(a.id)); // 改為降序，讓新的在前面
 
+const dejaVuPosts = posts2025.filter((post) => post.id.includes("deja-vu"));
+const camouflagePosts = posts2025.filter((post) =>
+  post.id.includes("camouflage"),
+);
+
 // 3. 組織成元件需要的資料結構
 const showcaseSections = [
   {
     title: "2025 秋｜美學運算",
-    posts: posts2025,
+    posts: [],
+    subSections: [
+      {
+        title: "Camouflage",
+        posts: camouflagePosts,
+      },
+      {
+        title: "Déjà vu",
+        posts: dejaVuPosts,
+      },
+    ],
   },
   {
     title: "2023 秋｜美學運算",

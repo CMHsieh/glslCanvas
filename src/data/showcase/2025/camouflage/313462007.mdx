@@ -1,0 +1,131 @@
+---
+title: "小狐狸偽裝模擬器 (Fox Camouflage Simulator)"
+description: "「迷彩偽裝」的概念，有一部份源於仿生機能或對自然場景的模仿。本作品以諧擬的方式，讓野生動物穿著迷彩服、於場景畫面中躲避來自螢幕外操作者的追蹤，體現觀察者、動物與環境的互動。"
+creator: "劉子逸 Liu Tsu-yi"
+pubDate: "2025-12-17"
+heroImage: "./images/313462007-1.jpg"
+demoUrl: "https://liutsuyi.github.io/114-1-glsl_camouflage_final/"
+---
+
+import img1 from "./images/313462007-1.jpg";
+import img2 from "./images/313462007-2.jpg";
+import img3 from "./images/313462007-3.jpg";
+import img4 from "./images/313462007-4.jpg";
+import img5 from "./images/313462007-5.jpg";
+import img6 from "./images/313462007-6.jpg";
+import img7 from "./images/313462007-7.jpg";
+import img8 from "./images/313462007-8.jpg";
+import img9 from "./images/313462007-9.jpg";
+
+「迷彩偽裝」的概念，有一部份源於仿生機能或對自然場景的模仿。本作品以諧擬的方式，讓野生動物穿著迷彩服、於場景畫面中躲避來自螢幕外操作者的追蹤，體現觀察者、動物與環境的互動。
+
+作品包含一組具有圖層深度的場景、游標互動狐狸角色及迷彩圖樣編輯器。使用者能微調迷彩圖樣，並讓狐狸角色穿上偽裝，於場景中隱匿。
+
+The concept of “camouflage” is partly derived from biomimicry and the imitation of natural environments. This work presents a playful interpretation in which a wild fox wears camouflage clothing and hides within the scene, evading the viewer—an observer positioned outside the screen. The piece highlights the dynamic relationship among the observer, the animal, and the environment.
+
+The work consists of a layered-depth landscape, an interactive fox character controlled by the user’s cursor, and a camouflage pattern editor. Users can fine-tune the camouflage design, dress the fox in the customized pattern, and watch it blend seamlessly into the scene.
+
+<Image 
+  src={img1} 
+  alt="作品頁面" 
+  caption="作品頁面" 
+/>
+
+<Video 
+  src="https://youtu.be/Gt1PSXG2iXE?si=419ElY2YtyAIXBK0" 
+  caption="操作範例影片"
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>
+
+<Flex>
+  <Box flex={1}>
+    <Image 
+      src={img2} 
+      alt="場景功能" 
+      caption="場景功能"
+      maxWidth="360px"
+    />
+  </Box>
+  <Box flex={2}>
+    <Image 
+      src={img3} 
+      alt="技術說明" 
+      caption="技術說明"
+    />
+  </Box>
+</Flex>
+
+### 場景功能及技術說明
+
+模擬器中關於場景的製作，使用GLSL語言進行6張場景素材的疊合運算，並透過模糊效果的設置，模擬出類似景深的效果。使用者能夠過「焦距」及「光圈」的控制，重現出立體空間在視野中的深度變化，其中光圈參數重現不同光圈尺寸對景深深淺的影響。
+*附註：目前系統提供使用者自行上傳帶有透明通道的場景素材進行替換。
+
+<Image 
+  src={img4} 
+  alt="狐狸與場景" 
+  caption="狐狸與場景"
+/>
+
+<Flex>
+  <Box>
+    ### 狐狸角色
+    
+    使用者除了能透過滑鼠游標對狐狸角色產生移動引導，搭配鍵盤左右鍵的使用，更能
+    讓狐狸穿梭於不同圖層之間，實現「隱匿」的效果；另外，鍵盤上下鍵則能操作狐狸
+    站立及坐下(配戴帽T，實現進一步隱匿)。
+    可以特別注意的是，隨著狐狸在場景深度中的變換，景深效果也會作用於角色上，
+    使用者可以藉此觀察偽裝迷彩在立體空間中的效果。
+  </Box>
+  <Box>
+    <Image 
+      src={img5} 
+      alt="狐狸角色" 
+      caption="狐狸角色"
+    />
+  </Box>
+</Flex>
+
+<Flex>
+  <Box flex={1}>
+    <Image 
+      src={img6} 
+      alt="迷彩渲染器" 
+      caption="迷彩渲染器"
+    />
+  </Box>
+  <Box flex={2}>
+    <Image 
+      src={img7} 
+      alt="狐狸迷彩" 
+      caption="狐狸迷彩"
+    />
+  </Box>
+</Flex>
+
+### 迷彩渲染器
+
+系統中共提供了兩種迷彩渲染器，分別是台灣載具常見的「北約3色迷彩」及「陸軍數位迷彩」，使用者能操作Slider微調迷彩色塊比例等參數，並在調整完成後將迷彩「穿著」在狐狸角色身上，用以觀察迷彩於環境中的效果。未來，我們期望能在渲染器中添加「滴管工具」，讓使用者能自行從環境中採樣色票。
+
+<Flex>
+  <Box>
+    <Image 
+      src={img8} 
+      alt="迷彩渲染器" 
+      caption="迷彩渲染器"
+    />
+  </Box>
+  <Box>
+    <Image 
+      src={img9} 
+      alt="狐狸迷彩" 
+      caption="狐狸迷彩"
+    />
+  </Box>
+</Flex>
+
+### 製作工具
+
+本作品使用Copilot進行Html、Java、GLSL的編寫協作，素材則採用Vizcom及Gemini等生成工具進行繪製。

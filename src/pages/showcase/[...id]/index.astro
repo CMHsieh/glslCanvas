@@ -5,6 +5,10 @@ import { getCollection, render } from "astro:content";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Button from "@/components/mdx/Button";
+import Image from "@/components/mdx/Image.astro";
+import Video from "@/components/mdx/Video.astro";
+import Flex from '@/components/mdx/Flex';
+import Box from '@/components/mdx/Box';
 
 export async function getStaticPaths() {
   const posts = await getCollection("showcase");
@@ -40,7 +44,7 @@ const { Content } = await render(post);
       }
       <hr />
       <article class="prose">
-        <Content />
+        <Content components={{ Image, Video, Flex, Box }} />
       </article>
     </main>
   </div>

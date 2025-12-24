@@ -1,0 +1,12 @@
+---
+import VideoPlayer from "./VideoPlayer";
+
+interface Props {
+  src: string;
+  [key: string]: any; // 允許其他額外的 props
+}
+
+const props = Astro.props;
+---
+
+<VideoPlayer {...props} client:only="react" />

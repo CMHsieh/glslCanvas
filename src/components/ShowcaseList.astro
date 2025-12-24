@@ -7,6 +7,7 @@ import type { CollectionEntry } from "astro:content";
 interface Section {
   title: string;
   posts: CollectionEntry<"showcase">[];
+  subSections?: Section[];
 }
 
 interface Props {
@@ -24,18 +25,38 @@ const base = import.meta.env.BASE_URL || "/";
     sections.map((section) => (
       <div class={styles.list_section}>
         <h2 class={styles.section_title}>{section.title}</h2>
-        <ul class={styles.list}>
-          {section.posts.map((post) => (
-            <li>
-              <a href={`${base}/showcase/${post.id}`}>
-                <ShowcaseCard
-                  heroImage={post.data.heroImage}
-                  title={post.data.title}
-                />
-              </a>
-            </li>
+        {section.posts.length > 0 && (
+          <ul class={styles.list}>
+            {section.posts.map((post) => (
+              <li>
+                <a href={`${base}/showcase/${post.id}`}>
+                  <ShowcaseCard
+                    heroImage={post.data.heroImage}
+                    title={post.data.title}
+                  />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        {section.subSections &&
+          section.subSections.map((subSection) => (
+            <div class={styles.sub_section}>
+              <h3 class={styles.sub_section_title}>{subSection.title}</h3>
+              <ul class={styles.list}>
+                {subSection.posts.map((post) => (
+                  <li>
+                    <a href={`${base}/showcase/${post.id}`}>
+                      <ShowcaseCard
+                        heroImage={post.data.heroImage}
+                        title={post.data.title}
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ul>
       </div>
     ))
   }

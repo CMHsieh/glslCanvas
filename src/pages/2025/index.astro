@@ -14,11 +14,20 @@ const posts2025 = allShowcasePosts
   .filter((post) => post.id.startsWith("2025"))
   .sort((a, b) => b.id.localeCompare(a.id)); // 改為降序，讓新的在前面
 
+const dejaVuPosts = posts2025.filter((post) => post.id.includes("deja-vu"));
+const camouflagePosts = posts2025.filter((post) =>
+  post.id.includes("camouflage"),
+);
+
 // 組織成元件需要的資料結構
 const showcaseSections = [
   {
     title: "Déjà vu",
-    posts: posts2025,
+    posts: dejaVuPosts,
+  },
+  {
+    title: "Camouflage",
+    posts: camouflagePosts,
   },
 ];
 ---

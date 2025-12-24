@@ -1,0 +1,82 @@
+---
+import { Image as AstroImage } from "astro:assets";
+
+type Props = {
+  src: any;
+  alt: string;
+  width?: number | `${number}`;
+  height?: number | `${number}`;
+  maxWidth?: number | string;
+  align?: "left" | "center" | "right";
+  caption?: string;
+  style?: any;
+  className?: string;
+  [key: string]: any;
+};
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  maxWidth,
+  align = "center",
+  caption,
+  style,
+  className,
+  ...rest
+} = Astro.props;
+
+let margin = "1.5rem auto";
+if (align === "left") {
+  margin = "1.5rem auto 1.5rem 0";
+} else if (align === "right") {
+  margin = "1.5rem 0 1.5rem auto";
+}
+
+const containerStyle = {
+  maxWidth: maxWidth || "100%",
+  margin,
+  display: "block",
+  ...style,
+};
+
+const imageStyle = {
+  width: "100%",
+  height: "auto",
+  borderRadius: "0.5rem",
+  border: "1px solid #eee",
+  display: "block",
+};
+
+// Merge styles for the image when no caption is present
+const mergedImageStyle = caption
+  ? imageStyle
+  : { ...imageStyle, ...containerStyle };
+---
+
+{
+  caption ? (
+    <figure style={containerStyle} class={className}>
+      <AstroImage
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        style={imageStyle}
+        {...rest}
+      />
+      <figcaption>{caption}</figcaption>
+    </figure>
+  ) : (
+    <AstroImage
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      style={mergedImageStyle}
+      class={className}
+      {...rest}
+    />
+  )
+}
