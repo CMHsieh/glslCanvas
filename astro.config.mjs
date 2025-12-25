@@ -23,5 +23,34 @@ export default defineConfig({
       name: "Geist Mono",
       cssVariable: "--font-geist-mono",
     }]
+  },
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 1600,
+      rollupOptions: {
+        onwarn(warning, warn) {
+          if (warning.code === "UNUSED_EXTERNAL_IMPORT" && warning.message.includes("@astrojs/internal-helpers/remote")) return;
+          warn(warning);
+        },
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('glslCanvas')) {
+                return 'glslCanvas';
+              }
+              if (id.includes('react-player')) {
+                return 'react-player';
+              }
+              if (id.includes('lucide-react')) {
+                return 'lucide-react';
+              }
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'react-vendor';
+              }
+            }
+          }
+        }
+      }
+    }
   }
 });
