@@ -4,17 +4,28 @@
   position: fixed;
   top: 0;
   right: 0;
+  width: 100%;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--spacing-xl);
   padding: var(--spacing-l) var(--spacing-xl);
-  mix-blend-mode: difference;
+  
 
-  a {
-    color: hsl(var(--color-neutral-000));
+  background-color: black; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+ a {
+  color: hsl(0, 0%, 53%);
+  transition: color 0.2s ease;
+  text-decoration: none;
+  
+  &.active {
+  color: hsl(var(--color-neutral-000));
   }
+}
+a:hover {color: hsl(var(--color-neutral-000));}
 
   &[data-is-menu-open='true'] {
     mix-blend-mode: normal;

@@ -6,10 +6,17 @@
   margin-top: var(--spacing-3xl);
   padding: var(--spacing-l) 0;
   gap: var(--spacing-l);
+  
 }
 
 .footer_link {
   display: flex;
   align-items: center;
   gap: var(--spacing-s);
+  color: inherit;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: hsl(var(--color-neutral-400));
+  }
 }
