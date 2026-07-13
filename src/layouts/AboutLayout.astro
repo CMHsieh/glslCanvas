@@ -6,6 +6,18 @@ import Footer from "@/components/Footer.astro";
 
 <Layout>
   <Header />
+ <div class="geometry_bg">
+    <div class="shape circle" style="top: 12%; left: 8%; width: 60px; height: 60px;"></div>
+    <div class="shape rect" style="top: 35%; left: 12%; width: 40px; height: 80px; --rot: 35deg;"></div>
+    <div class="shape rect dashed" style="bottom: 25%; left: 6%; width: 45px; height: 90px; --rot: -25deg;"></div>
+    <div class="shape circle" style="bottom: 15%; left: 18%; width: 70px; height: 70px;"></div>
+
+    <div class="shape rect" style="top: 8%; right: 28%; width: 35px; height: 75px; --rot: -15deg;"></div>
+    <div class="shape circle dashed" style="top: 25%; right: 8%; width: 90px; height: 90px;"></div>
+    <div class="shape rect" style="bottom: 40%; right: 12%; width: 40px; height: 80px; --rot: -35deg;"></div>
+    <div class="shape rect dashed" style="bottom: 15%; right: 5%; width: 35px; height: 70px; --rot: 25deg;"></div>
+  </div>
+
   <main>
     <div class="container">
       <h1>About</h1>
@@ -15,13 +27,71 @@ import Footer from "@/components/Footer.astro";
       </article>
     </div>
   </main>
+
   <Footer />
 </Layout>
+
 
 <style lang="scss">
   @use "@/styles/breakpoints.scss";
   .container {
     max-width: breakpoints.$md;
-    margin: 100px var(--spacing-xl);
+    margin: 100px auto;
+    padding: 0 var(--spacing-xl);
+    h1 {
+      text-align: center;
+    }
+    .prose :global(p) {
+    line-height: 1.8;
+    margin-bottom: var(--spacing-xl);
+    
+    /* Change the color to white (or a very light grey for softer contrast) */
+     color: hsl(0, 0%, 53%);
   }
+ .prose :global(a) {
+    /* Change this hex code to whatever color you prefer */
+    color: #ffffff; 
+    
+    /* Pushes the underline down slightly so it doesn't cross out the Chinese characters */
+    text-underline-offset: 4px; 
+    
+    /* Makes the color change smooth instead of instant */
+    transition: color 0.2s ease; 
+  }
+
+  /* --- Link Hover State --- */
+  .prose :global(a:hover) {
+    /* The color it will change to when your mouse is over it */
+     color: hsl(var(--color-neutral-400));
+  }
+  
+  }
+  .geometry_bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .shape {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.08); 
+    box-sizing: border-box;
+    transform: rotate(var(--rot, 0deg)); 
+  }
+
+  .shape.circle {
+    border-radius: 50%;
+  }
+
+  .shape.dashed {
+    border-style: dashed;
+    border-width: 1.5px;
+  }
+
+  
 </style>
