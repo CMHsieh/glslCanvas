@@ -13,20 +13,20 @@ import img_2 from './images/sz-han-rembrandt/6.png';
 import img_3 from './images/sz-han-rembrandt/7.png';
 import img_4 from './images/sz-han-rembrandt/10.png';
 
-<div style={{
+<img 
+  src={img_bg.src} 
+  alt="Background face"
+  style={{
     position: 'fixed',
     left: 0,
     top: 0,
     height: '100svh',
-    minWidth: '1px', // 讓 div 有寬度
-    width: '100vw',  // 讓 div 橫向撐滿螢幕
-    backgroundImage: `url(${img_bg.src})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'auto 100svh', // 高度撐滿，寬度依比例
-    backgroundPosition: 'left center',
-    zIndex: -1,
-    opacity: '0.5'
-}} />
+    width: 'auto',
+    zIndex: -1,             // Keeps it behind your text
+    pointerEvents: 'none',  // This allows you to click through the image to text/links
+    opacity: '0.3'          // Adjust this value (0.1 to 1.0) to your liking
+  }} 
+/>
 
 <Flex>
   <Box>
