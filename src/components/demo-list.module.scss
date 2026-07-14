@@ -1,26 +1,29 @@
 @use '@/styles/breakpoints.scss';
 
 .container {
-  padding-top: var(--spacing-xl);
+  padding-top: var(--spacing-s);
   max-width: breakpoints.$xl;
+  
 }
 
 .list_section {
   margin-bottom: var(--spacing-2xl);
+  
 }
 
 .section_title {
-  font-size: var(--spacing-xl);
-  margin-bottom: var(--spacing-l);
-  color: hsl(var(--color-neutral-800));
+  font-size: var(--spacing-l);
+  margin-bottom: var(--spacing-xl);
+ color: hsl(0, 0%, 100%);
 }
 
 .list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: repeat(auto-fill, minmax(0, 1fr));
-  gap: var(--spacing-m);
-  // padding: var(--spacing-m);
+  gap: var(--spacing-2xl);
+  padding: var(--spacing-m);
+  margin-bottom: 4rem;
 
   @media(max-width: breakpoints.$lg) {
     grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -1,0 +1,332 @@
+---
+title: "Prismatic Space"
+creator: "謝茵萁"
+pubDate: "2026-06-09"
+heroImage: "./images/PH/Header2.png" 
+---
+
+import img1 from './images/PH/1.jpg';
+import img2 from './images/PH/2.jpg';
+import img3 from './images/PH/IAA.png';
+import img4 from './images/PH/ai.png';
+import img5 from './images/PH/3.png';
+import img6 from './images/PH/4.png';
+import img7 from './images/PH/5.png';
+
+import vid1 from './images/PH/Marble.mp4';
+import vid2 from './images/PH/final.mp4';
+
+
+### Concept
+
+<br>In education, functional architecture often prioritizes efficiency over inspiration, hindering the student
+experience. Students navigating dull, concrete environments may face cognitive fatigue due to the absence of
+dynamic elements.</br>
+<br>**"Prismatic Space"** is an architectural and digital intervention designed to break this cycle. By injecting
+vibrant, shifting light into a mundane transit space, the project transforms a simple staircase into a sanctuary
+of cognitive restoration.</br>
+<br>I use advanced technologies such as Marble AI and 3D Gaussian Splatting to transform heavy concrete
+into a magnificent stained-glass forest. I also embrace Impressionist principles by using custom GLSL shaders in
+TouchDesigner to create dynamic "rainbow ribbons" of light and atmospheric effects. This visual stimulus,
+termed "soft fascination" by environmental psychologists, promotes relaxation and sparks creativity.
+"Prismatic Space" demonstrates that our environments engage actively in the educational journey. By
+transforming light and color, we can inspire creativity and enrich learning experiences, envisioning a future
+where educational spaces nurture both mind and spirit.</br>
+
+<Flex>
+  <Box>
+    <figure>
+      <Image src={img2} alt="1"/>
+      <figcaption>Reference 1</figcaption>
+    </figure>
+  </Box>
+  <Box>
+    <figure>
+      <Image src={img1} alt="2"/>
+      <figcaption>Reference 2</figcaption>
+    </figure>
+  </Box>
+</Flex>
+
+### IAA Space
+
+<Image 
+  src={img3} 
+  alt="" 
+  caption="Real photo of IAA space" 
+/>
+<Image 
+  src={img4} 
+  alt="" 
+  caption="AI generated photo of IAA space" 
+/>
+
+### 3D space with Marble AI
+
+<Flex>
+  <Box>
+    <figure>
+      <Image src={img5} alt=""/>
+      <figcaption>Left</figcaption>
+    </figure>
+  </Box>
+  <Box>
+    <figure>
+      <Image src={img6} alt=""/>
+      <figcaption>Center</figcaption>
+    </figure>
+  </Box>
+  <Box>
+    <figure>
+      <Image src={img7} alt=""/>
+      <figcaption>Right</figcaption>
+    </figure>
+  </Box>
+</Flex>
+
+<Video 
+  src={vid1} 
+  caption=""
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>
+
+```
+uniform sampler2D sPositions;
+uniform sampler2D sRotation;
+uniform sampler2D sScale;
+uniform sampler2D sColors;
+uniform sampler2D sLookup;
+uniform vec3 uFocal;
+uniform vec3 uT;
+uniform vec3 uR;
+uniform float uS;
+uniform ivec2 uPointResolution;
+uniform float uScale;
+uniform float uAlphaThreshold;
+uniform float u_time;
+// --- THE DATA BRIDGE ---
+// We added 'camDist' here so the Vertex shader can send true depth to the Pixel shader.
+#ifdef TD_VERTEX_SHADER
+out Vertex
+#else
+in Vertex
+#endif
+{
+ vec3 position;
+ vec4 color;
+ vec2 uv;
+ vec3 conic;
+ float camAngle;
+ float camDist;
+} Vert;
+// ==========================================
+// VERTEX SHADER
+// ==========================================
+#ifdef TD_VERTEX_SHADER
+mat3 RotZYX(vec3 a) {
+ vec3 c = cos(a), s = sin(a);
+ return mat3(
+ c.x*c.y, c.x*s.y*s.z - s.x*c.z, s.x*s.z + c.x*s.y*c.z,
+ s.x*c.y, c.x*c.z + s.x*s.y*s.z, s.x*s.y*c.z - c.x*s.z,
+ -s.y, s.z*c.y, c.y*c.z
+ );
+}
+mat3 quatToMat3(vec4 q) {
+ float qx = q.y, qy = q.z, qz = q.w, qw = q.x;
+ float qxx = qx*qx, qyy = qy*qy, qzz = qz*qz, qxz = qx*qz, qxy = qx*qy, qyw = qy*qw, qzw = qz*qw, qyz =
+qy*qz, qxw = qx*qw;
+ return mat3(
+ vec3(1.0 - 2.0 * (qyy + qzz), 2.0 * (qxy - qzw), 2.0 * (qxz + qyw)),
+ vec3(2.0 * (qxy + qzw), 1.0 - 2.0 * (qxx + qzz), 2.0 * (qyz - qxw)),
+ vec3(2.0 * (qxz - qyw), 2.0 * (qyz + qxw), 1.0 - 2.0 * (qxx + qyy))
+ );
+}
+mat3 RotScale(vec4 rot, vec3 scale, float globalScale) {
+ mat3 ms = mat3(
+ uS*globalScale*exp(scale.x), 0, 0,
+ 0, uS*globalScale*exp(scale.y), 0,
+ 0, 0, uS*globalScale*exp(scale.z)
+ );
+ return ms*quatToMat3(rot)*RotZYX(radians(uR.zyx));
+}
+vec3 Covariance(vec3 p, int cameraIndex, mat3 sigma) {
+ mat4 camMatrix = uTDMats[cameraIndex].cam;
+ vec2 limit = 1.3 * uFocal.xy;
+ vec4 camPos = camMatrix*vec4(p,1.);
+ camPos.xy = clamp(camPos.xy/camPos.z, -limit, limit)*camPos.z;
+ float focal = uFocal.z;
+ mat3 J = mat3(
+ focal/camPos.z, 0., -(focal*camPos.x)/(camPos.z*camPos.z),
+ 0., focal/camPos.z, -(focal*camPos.y)/(camPos.z*camPos.z),
+ 0, 0, 0
+ );
+ mat3 T = mat3(uTDMats[cameraIndex].camInverse)*J;
+ mat3 cov = transpose(T)*transpose(sigma)*T;
+ return vec3(cov[0][0] + .3, cov[0][1], cov[1][1] + .3);
+}
+void main() {
+ int instanceIndex = TDInstanceID();
+ int vertexIndex = int(gl_VertexID/4);
+ int index = instanceIndex * 1024 + vertexIndex;
+ int cameraIndex = TDCameraIndex();
+ ivec2 inRes = uPointResolution;
+ ivec2 xy = ivec2(index % inRes.x, index / inRes.x);
+ vec2 lookupData = texelFetch(sLookup, xy, 0).xy;
+ int lookupIndex = int(lookupData.y);
+ xy = ivec2(lookupIndex % inRes.x, lookupIndex / inRes.x);
+ vec3 pos = P;
+ vec2 uv = P.xy;
+ vec3 conic = vec3(0.);
+ vec2 ndc = vec2(0.);
+ vec4 color = texelFetch(sColors, xy, 0);
+ mat3 m = mat3(1);
+ vec4 posData = vec4(0.), rotData = vec4(0.);
+ vec3 scale = vec3(0.);
+
+ if (color.a > 0.0 && lookupData.x > 0 && lookupData.x < 1e5) {
+ posData = texelFetch(sPositions, xy, 0);
+ rotData = normalize(texelFetch(sRotation, xy, 0));
+ scale = texelFetch(sScale, xy, 0).xyz;
+ m = RotScale(rotData, scale, uScale);
+ mat3 sigma = transpose(m)*m;
+ vec3 cov = Covariance(posData.xyz, cameraIndex, sigma);
+ float det = cov.x * cov.z - cov.y * cov.y;
+ conic = vec3(cov.z,-cov.y,cov.x)/det;
+ vec2 wh = 2.*uFocal.xy * uFocal.z;
+ vec2 quadwh_scr = 3.*sqrt(cov.xz);
+ ndc = 2.*quadwh_scr / wh * smoothstep(0.0,0.1,uScale);
+ } else { posData *= 0; color *= 0; }
+
+ vec4 worldSpacePos = TDDeform(posData.xyz);
+ vec3 camPos = (uTDMats[cameraIndex].camInverse * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
+
+ // --- TRUE DEPTH CALCULATION ---
+ vec3 toCamRaw = camPos - worldSpacePos.xyz;
+ vec3 toCam = normalize(toCamRaw);
+ float camAngle = atan(toCam.x, toCam.z);
+ vec4 projectionSpace = TDWorldToProj(worldSpacePos);
+ projectionSpace /= projectionSpace.w;
+ projectionSpace.xy += ndc*pos.xy*1.0;
+ gl_Position = projectionSpace;
+ Vert.position = projectionSpace.xyz;
+ Vert.color = color;
+ Vert.uv = uv;
+ Vert.conic = conic;
+ Vert.camAngle = camAngle;
+
+ // Pass the true physical distance down to the Pixel Shader!
+ Vert.camDist = length(toCamRaw);
+}
+#endif
+// ==========================================
+// PIXEL SHADER
+// ==========================================
+#ifdef TD_PIXEL_SHADER
+out vec4 fragColor;
+float sdCircle( vec2 p, float r ) { return length(p) - r; }
+float sdFish(float i, vec2 p, float a) {
+ float ds, c = cos(a), s = sin(a);
+ p *= 1.3*mat2(c,s,-s,c);
+ p.x *= .97 + (.04+.2*p.y)*cos(i+9.*u_time);
+ ds = min(length(p-vec2(.8,0))-.45, length(p-vec2(-.14,0))-0.104);
+ p.y = abs(p.y)+.13;
+ return max(min(length(p),length(p-vec2(.56,0)))-.3,-ds)*.05;
+}
+float glow(float d, float str, float thickness){return thickness / pow(abs(d), str);}
+void main()
+{
+ vec4 color = Vert.color;
+ if (color.a == 0) discard;
+ vec2 d = Vert.uv;
+ vec3 conic = Vert.conic.xyz;
+ float power = -.5*(conic.x * d.x * d.x + conic.z * d.y * d.y) - conic.y*d.x*d.y;
+ color.a = min(0.99, color.a * exp(power));
+ if (power > 0. || color.a < max(uAlphaThreshold,1./255.)) discard;
+ TDCheckDiscard();
+ // --- 1. PULSING NEON STAR ---
+ vec2 p = Vert.uv * 2.5;
+ float c = cos(u_time), s = sin(u_time);
+ p *= mat2(c, s, -s, c);
+ const float an = 3.14159265 / 5.0;
+ const float en = 1.0 / 2.0;
+ vec2 acs = vec2(cos(an), sin(an));
+ vec2 ecs = vec2(cos(en), sin(en));
+ float bn = mod(atan(p.x, p.y), 2.0 * an) - an;
+ p = length(p) * vec2(cos(bn), abs(sin(bn)));
+ p -= 0.4 * acs;
+ p += ecs * clamp(-dot(p, ecs), 0.0, 0.4 * acs.y / ecs.y);
+ float dist = length(p) * sign(p.x);
+ float glowAmt = 0.02 / max(abs(dist), 0.001);
+ glowAmt *= (0.5 + 1.5 * sin(u_time * 1.5));
+ float shapeAlpha = smoothstep(0.02, 0.0, dist);
+ color.a = color.a * max(shapeAlpha, glowAmt);
+ color.rgb = color.rgb * shapeAlpha + (color.rgb * glowAmt * 2.0);
+ // --- 2. GLOBAL SUNLIGHT RIBBONS ---
+ vec2 screenPos = gl_FragCoord.xy * 0.001;
+ float rc = cos(0.8);
+ float rs = sin(0.8);
+ vec2 rayPos = mat2(rc, rs, -rs, rc) * screenPos;
+
+ float wave1 = pow(sin(rayPos.x * 7.0 + u_time * 0.3) * 0.5 + 0.5, 10.0);
+ float wave2 = pow(sin(rayPos.x * 7.0 + u_time * 0.8 + 2.0) * 0.5 + 0.5, 15.0);
+
+ float ribbon1 = smoothstep(0.4, 0.95, wave1);
+ float ribbon2 = smoothstep(0.5, 0.98, wave2);
+
+ vec3 rainbowColor1 = 0.5 + 0.5 * cos(u_time * 0.5 + rayPos.x * 4.0 + vec3(0.0, 2.0, 4.0));
+ vec3 rainbowColor2 = 0.5 + 0.5 * cos(u_time * 0.8 + rayPos.x * 6.0 + vec3(1.0, 2.5, 4.0));
+
+ vec3 totalRibbon = (ribbon1 * rainbowColor1) + (ribbon2 * rainbowColor2);
+ float ribbonMask = max(ribbon1, ribbon2);
+ color.rgb = mix(color.rgb, totalRibbon, ribbonMask * 0.2);
+ // --- 3. WANDERING FIREFLY ---
+ float randomSeed = fract(sin(dot(Vert.color.rgb, vec3(12.9898, 78.233, 45.164))) * 43758.5453) * 100.0;
+ float t = u_time * 0.8 + randomSeed;
+
+ vec2 fireflyPos = vec2(
+ sin(t * 1.1) * cos(t * 0.83),
+ cos(t * 1.3) * sin(t * 0.71)
+ ) * 2.5;
+
+ float ffDist = length((Vert.uv * 5.0) - fireflyPos) - 0.01;
+ float ffGlow = 0.010 / max(abs(ffDist), 0.0005);
+
+ float blink = pow(sin(u_time * 2.5 + randomSeed) * 0.5 + 0.5, 6.0);
+ ffGlow *= blink;
+
+ vec3 ffColor = vec3(1.7, 1.0, 0.2) * ffGlow * 3.0;
+ color.rgb += ffColor;
+ color.a = max(color.a, ffGlow * 0.5);
+ // --- 4. DEPTH-BASED FOG (Atmospheric Perspective) ---
+ // We are now using the true physical distance calculated in the Vertex Shader!
+ float distFromCamera = Vert.camDist;
+
+ // ADJUST THESE NUMBERS based on how big your 3D model is
+ float fogStart = 2.0; // Where fog begins
+ float fogEnd = 20.0; // Where fog is thickest
+
+ float fogThickness = smoothstep(fogStart, fogEnd, distFromCamera);
+
+ vec3 fogColor = vec3(0.9, 0.85, 0.7);
+
+ color.rgb = mix(color.rgb, fogColor, fogThickness * color.a * 0.85);
+ // --- OVERLAP FIX ---
+ if (color.a < 0.05) discard;
+ TDAlphaTest(color.a);
+ fragColor = TDOutputSwizzle(color);
+}
+#endif
+
+```
+
+<Video 
+  src={vid2} 
+  caption=""
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>

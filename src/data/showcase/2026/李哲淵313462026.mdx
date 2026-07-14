@@ -1,0 +1,116 @@
+---
+title: "Traces of Time and Light"
+creator: "李哲淵"
+pubDate: "2026-06-09"
+heroImage: "./images/Rocky/Header Image.jpg" 
+---
+
+import img1 from './images/Rocky/01-舊時光.png';
+import img2 from './images/Rocky/02-色鉛筆.jpg';
+import img3 from './images/Rocky/03-詩.jpg';
+
+import vid1 from './images/Rocky/01 舊時光.mp4';
+import vid2 from './images/Rocky/02 色鉛筆.mp4';
+import vid3 from './images/Rocky/03 詩.mp4';
+
+### 01-舊時光
+
+使用Touch designer把3DGS的模型做成可互動的粒子光效套用上舊時光的黑白影子
+
+<Image 
+  src={img1} 
+  alt="舊時光" 
+  caption="" 
+/>
+<Video 
+  src={vid1} 
+  caption=""
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>
+
+
+### 02-色鉛筆
+
+模擬色鉛筆的筆觸 並套用上光影變化
+
+<Image 
+  src={img2} 
+  alt="色鉛筆" 
+  caption="" 
+/>
+<Video 
+  src={vid2} 
+  caption=""
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>
+
+```
+// ==========================================
+// ⭐️ 視覺風格與光影切換區
+// ==========================================
+
+// 【風格特效選擇器】
+// 0 = 原始高斯水彩感 (平滑、半透明的筆觸)
+// 1 = 色鉛筆/蠟筆畫感 (自然斑駁的紙張紋理、斜向排線、高飽和對比)
+#define STYLE_MODE 1
+
+// 【燈光特效選擇器】
+// 0 = 一般燈光 (保留模型最原始的色彩)
+// 1 = 動態光影 (白天 -> 黃昏 -> 晚上 -> 白天 循環過渡)
+#define LIGHT_MODE 1
+
+// ==========================================
+// ⭐️ 顆粒外觀微調區 (解決太尖、太大、太突出的問題)
+// ==========================================
+#define PARTICLE_SIZE 0.3      // 顆粒大小 (建議 0.4 ~ 0.8)
+#define PARTICLE_OPACITY 0.6   // 顆粒透明度 (建議 0.3 ~ 0.8)
+#define PARTICLE_SOFTNESS 1  // 邊緣柔和度 (建議 1.2 ~ 2.0)
+// ==========================================
+
+```
+
+### 03-詩
+
+朝辭白帝彩雲間， 千里江陵一日還。 兩岸猿聲啼不住，輕舟已過萬重山。
+
+<Image 
+  src={img3} 
+  alt="詩" 
+  caption="" 
+/>
+<Video 
+  src={vid3} 
+  caption=""
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>
+```
+1 設定 搖桿可控制畫面
+2 增加 Text TOP 的節點 可輸入中文 讓 模型出現中文字
+3 shader控制形狀和燈光
+
+
+shader 部分
+// 【形狀選擇器】
+// 1 = 差不多大小的圓點
+// 2 = 動態旋轉的大小星星框 (空心)
+// 3 = 愛心
+// 4 = 文字獨白 (全靜止)
+// 5 = 文字獨白 (地面波浪游動，空中靜止)
+
+
+// 【燈光特效選擇器】
+// 0 = 原本不動的光影 (無特效)
+// 1 = 白天 -> 黃昏 -> 晚上 -> 白天 (日夜循環過渡)
+// 2 = 聚光燈螢幕隨機游走 (照亮處恢復原色，其餘為白色系)
+
+```
+

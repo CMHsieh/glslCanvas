@@ -26,21 +26,25 @@
 }
 
 .primary {
-  background: hsl(var(--color-primary));
-  color: hsl(var(--color-neutral-000));
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
 }
 
 .primary:hover {
-  background: hsl(var(--color-primary-dark));
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
 }
 
 .outline {
-  background: transparent;
-  color: hsl(var(--color-primary));
-  border: 1px solid hsl(var(--color-primary));
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
 }
 
 .outline:hover {
-  background: hsl(var(--color-primary));
-  color: hsl(var(--color-neutral-000));
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
 }

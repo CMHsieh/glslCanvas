@@ -24,11 +24,19 @@ const posts2025 = allShowcasePosts
 
 const dejaVuPosts = posts2025.filter((post) => post.id.includes("deja-vu"));
 const camouflagePosts = posts2025.filter((post) =>
-  post.id.includes("camouflage"),
-);
+  post.id.includes("camouflage"));
+
+const posts2026 = allShowcasePosts
+  .filter((post) => post.id.startsWith("2026"))
+  .sort((a, b) => b.id.localeCompare(a.id));
+
 
 // 3. 組織成元件需要的資料結構
 const showcaseSections = [
+  {
+    title: "2026 ｜ 光影運算",
+    posts: posts2026,
+  },
   {
     title: "2025 秋｜美學運算",
     posts: [],

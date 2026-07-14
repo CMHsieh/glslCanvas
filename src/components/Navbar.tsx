@@ -1,5 +1,5 @@
 import styles from "./navbar.module.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AlignRight, X } from "lucide-react";
 
 const base = import.meta.env.BASE_URL || "/";
@@ -20,6 +20,11 @@ const navItems = {
 
 export default function Navbar({ }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState("");
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+  }, []);
 
   const handleLinkClick = () => {
     setIsMenuOpen(false);
@@ -30,7 +35,7 @@ export default function Navbar({ }) {
       <div className={`${styles.menu_bg} ${isMenuOpen ? styles.open : ''}`} />
       <nav className={styles.nav} data-is-menu-open={isMenuOpen}>
         {/* Mobile Menu Button */}
-        <button
+         <button
           className={`${styles.menu_button} ${isMenuOpen ? styles.open : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
@@ -42,13 +47,24 @@ export default function Navbar({ }) {
           )}
         </button>
 
+
         {/* Navigation Links */}
-        <div className={`${styles.nav_menu} ${isMenuOpen ? styles.open : ''}`}>
-          {Object.entries(navItems).map(([path, { title }]) => (
-            <a key={path} href={path} onClick={handleLinkClick}>
-              {title}
-            </a>
-          ))}
+          <div className={`${styles.nav_menu} ${isMenuOpen ? styles.open : ''}`}>
+          {Object.entries(navItems).map(([path, { title }]) => {
+            const cleanPath = path.replace('//', '/');
+            const isActive = currentPath !== "" && currentPath.includes(cleanPath);
+
+            return (
+              <a 
+                key={path} 
+                href={path} 
+                onClick={handleLinkClick}
+                className={isActive ? styles.active : ""}
+              >
+                {title}
+              </a>
+            );
+          })}
         </div>
       </nav>
     </>

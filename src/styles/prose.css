@@ -20,7 +20,7 @@
 
   h2 {
     font-size: 2rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 0.5px solid #eee;
     padding-bottom: 0.5rem;
   }
 
@@ -43,14 +43,14 @@
   /* Links */
   a:not(.button) {
     font-weight: 500;
-    color: hsl(var(--color-primary));
+    color: hsl(var(--color-neutral-000));
     text-decoration: underline;
     text-underline-offset: 4px;
     transition: color 0.2s;
   }
 
   a:not(.button):hover {
-    color: hsl(var(--color-primary-dark));
+    color: hsl(var(--color-neutral-400));
   }
 
   li a {
@@ -63,7 +63,7 @@
     line-height: 1.75;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
-    color: var(--color-text, #222);
+    color: var(--color-text, #ffffff);
   }
 
   /* Lists */
@@ -84,6 +84,8 @@
 
   li {
     margin-top: 0.5rem;
+   color: hsl(0, 0%, 53%);
+
   }
 
   /* Blockquote */
@@ -100,7 +102,7 @@
   /* Images */
   img {
     border-radius: 0.5rem;
-    border: 1px solid #eee;
+    border: 1px solid #000000;
     max-width: 100%;
     height: auto;
     /* margin: 1.5rem 0; */
@@ -148,7 +150,7 @@
 
   th {
     font-weight: 600;
-    background: #f5f5f5;
+    background: #222;
   }
 
   tr {

@@ -1,0 +1,66 @@
+---
+title: "Life on the Rocks"
+creator: "謝茵萁"
+pubDate: "2026-05-04"
+heroImage: "./images/PH_mid/head.png" 
+---
+
+import img1 from './images/PH_mid/1.png';
+import img2 from './images/PH_mid/2.png';
+import img3 from './images/PH_mid/3.png';
+import img4 from './images/PH_mid/4.png';
+
+import vid1 from './images/PH_mid/Luma.mp4';
+import vid2 from './images/PH_mid/1.mp4';
+
+<Video 
+  src={vid1} 
+  caption="3D Scanning with Luma AI"
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>
+
+<Flex>
+  <Box>
+    <Image 
+      src={img1} 
+      alt=""
+      caption="Shader 1" 
+    />
+  </Box>
+  <Box>
+    <Image 
+      src={img2} 
+      alt="" 
+      caption="Shader 2" 
+    />
+  </Box>
+</Flex>
+
+<Flex>
+<Box>
+    <Image 
+      src={img3} 
+      alt="" 
+      caption="Shader 3" 
+    />
+  </Box>
+    <Box>
+    <Image 
+      src={img4} 
+      alt="" 
+      caption="Shader 4" 
+    />
+  </Box>
+  </Flex>
+
+<Video 
+  src={vid2} 
+  caption="Demo"
+  autoplay={false}
+  loop={true}
+  muted={true}
+  controls={true}
+/>
